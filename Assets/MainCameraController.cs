@@ -44,7 +44,8 @@ public class MainCameraController : MonoBehaviour
 
     private void CameraMove()
     {
-        
+        //drag mouse to move camera around area
+        //limit the camera movement to the size of the images max width and height
     }
 }
 
