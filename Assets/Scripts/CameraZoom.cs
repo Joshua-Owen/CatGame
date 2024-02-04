@@ -3,9 +3,11 @@ using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
-public class MainCameraController : MonoBehaviour
+public class CameraZoom : MonoBehaviour
 {
+    //camera zoom
     Camera mainCamera;
     [SerializeField]
     float minFov = 15f;
@@ -14,10 +16,17 @@ public class MainCameraController : MonoBehaviour
     [SerializeField]
     float sensitivity = 10f;
 
+    //camera drag
+   CameraDrag cameraDrag;
+
+
+
+
 
     // Start is called before the first frame update
     void Start()
     {
+        cameraDrag =  FindObjectOfType<CameraDrag>();
         mainCamera = GetComponent<Camera>();
         print("test");
 
@@ -25,27 +34,19 @@ public class MainCameraController : MonoBehaviour
     }
 
 
-    // Update is called once per frame
-    void Update()
+    public void Zoom(InputAction.CallbackContext ctx)
     {
-        CameraZoom();
-
-
-    }
-
-    private void CameraZoom()
-    {
-
-        var fov = Camera.main.fieldOfView;
+        cameraDrag.OnDrag(ctx);
+        var fov = Camera.main.orthographicSize;
         fov += Input.GetAxis("Mouse ScrollWheel") * sensitivity;
         fov = Mathf.Clamp(fov, minFov, maxFov);
-        mainCamera.fieldOfView = fov;
+        mainCamera.orthographicSize = fov;
+        cameraDrag.OnDrag(ctx);
+
+        
     }
 
-    private void CameraMove()
-    {
-        //drag mouse to move camera around area
-        //limit the camera movement to the size of the images max width and height
-    }
+    
+
 }
 
